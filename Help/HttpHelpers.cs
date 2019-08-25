@@ -1,7 +1,6 @@
 ﻿using HttpHelp;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
+using System.DrawingCore;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
