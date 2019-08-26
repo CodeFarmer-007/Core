@@ -25,8 +25,10 @@ namespace Lottery_Bets
 
         public IConfiguration Configuration { get; }
 
+        //初始化容器
         public static IContainer AutofacContainer;
 
+        //运行时调用此方法，使用此方法向容器添加服务。
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
@@ -38,6 +40,7 @@ namespace Lottery_Bets
             });
 
 
+            //调用全局过滤器
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             var basePath = Microsoft.DotNet.PlatformAbstractions.ApplicationEnvironment.ApplicationBasePath;
@@ -55,6 +58,7 @@ namespace Lottery_Bets
             var assmblysRepositroy = Assembly.LoadFile(serviceDllRepositroy);
             builder.RegisterAssemblyTypes(assmblysRepositroy).AsImplementedInterfaces().InstancePerLifetimeScope();
 
+            //注入，填充过滤器
             builder.Populate(services);
 
             AutofacContainer = builder.Build();
@@ -88,7 +92,7 @@ namespace Lottery_Bets
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //程序停止调用函数
+            //程序停止调用函数（释放）
             appLifetime.ApplicationStopped.Register(() => { AutofacContainer.Dispose(); });
         }
     }
