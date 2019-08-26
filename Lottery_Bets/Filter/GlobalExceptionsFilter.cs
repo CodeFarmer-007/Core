@@ -61,8 +61,7 @@ namespace Lottery_Bets.Filter
         /// <returns></returns>
         private string WriteLog(string throwMsg, Exception ex)
         {
-            return string.Format("【自定义错误】：{0} \r\n【异常类型】：{1} \r\n【异常信息】：{2} \r\n【堆栈调用】：{3}", new object[] { throwMsg,
-                ex.GetType().Name, ex.Message, ex.StackTrace });
+            return ($"【自定义错误】：{throwMsg} \r\n【异常类型】：{ex.GetType().Name} \r\n【异常信息】：{ ex.Message} \r\n【异常发生方法】：{ex.TargetSite.Name}  \r\n【堆栈调用】：{ex.StackTrace}");
         }
 
         /// <summary>
