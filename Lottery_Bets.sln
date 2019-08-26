@@ -3,29 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lottery_Bets", "Lottery_Bets\Lottery_Bets.csproj", "{4A03EFCA-673A-4F46-9C68-2F7B6D27DA84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lottery_Bets", "Lottery_Bets\Lottery_Bets.csproj", "{4A03EFCA-673A-4F46-9C68-2F7B6D27DA84}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Help", "Help", "{EFBBA5D3-028D-4911-BB6C-19F976CBD25D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{EFBBA5D3-028D-4911-BB6C-19F976CBD25D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HttpHelp", "Help\HttpHelp.csproj", "{16CEF8D2-7D6A-4A45-B8C3-1735C1C49F59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpHelp", "Help\HttpHelp.csproj", "{16CEF8D2-7D6A-4A45-B8C3-1735C1C49F59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{79039FF4-9D69-49E7-82C1-4B43EC6E4685}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IService", "IService\IService.csproj", "{5D99B728-43C3-4A82-A792-550F5A08FAB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IService", "IService\IService.csproj", "{5D99B728-43C3-4A82-A792-550F5A08FAB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "ServiceRepository\Service.csproj", "{E684D36C-D2A1-4CE9-BCC5-EE3A3BFB1012}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Service", "ServiceRepository\Service.csproj", "{E684D36C-D2A1-4CE9-BCC5-EE3A3BFB1012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{58EA82ED-A0C7-4BC0-9A30-87688EDC6A15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ViewModel", "ViewModel\ViewModel.csproj", "{58EA82ED-A0C7-4BC0-9A30-87688EDC6A15}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Repositorys", "Repositorys", "{1FB5AD18-BC8C-424A-89DA-12AAAD1CA38B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IRepository", "IRepository\IRepository.csproj", "{B20E3ABA-95D7-4AB6-8896-85850F857B8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IRepository", "IRepository\IRepository.csproj", "{B20E3ABA-95D7-4AB6-8896-85850F857B8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{88E7B3D9-7413-4DA6-AB9F-2AA357CAC582}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repository", "Repository\Repository.csproj", "{88E7B3D9-7413-4DA6-AB9F-2AA357CAC582}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity", "Entity\Entity.csproj", "{14241BF0-947E-4A26-A0E2-6B679BC5FC31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csproj", "{14241BF0-947E-4A26-A0E2-6B679BC5FC31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtherHelp", "OtherHelp\OtherHelp.csproj", "{5EF8768D-635A-48A3-8270-2F3DA8AC53D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtherHelp", "OtherHelp\OtherHelp.csproj", "{5EF8768D-635A-48A3-8270-2F3DA8AC53D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{4609B3CB-480C-4330-91DD-8441D990B743}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{5EF8768D-635A-48A3-8270-2F3DA8AC53D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EF8768D-635A-48A3-8270-2F3DA8AC53D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EF8768D-635A-48A3-8270-2F3DA8AC53D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4609B3CB-480C-4330-91DD-8441D990B743}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4609B3CB-480C-4330-91DD-8441D990B743}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4609B3CB-480C-4330-91DD-8441D990B743}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4609B3CB-480C-4330-91DD-8441D990B743}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +88,7 @@ Global
 		{88E7B3D9-7413-4DA6-AB9F-2AA357CAC582} = {1FB5AD18-BC8C-424A-89DA-12AAAD1CA38B}
 		{14241BF0-947E-4A26-A0E2-6B679BC5FC31} = {1FB5AD18-BC8C-424A-89DA-12AAAD1CA38B}
 		{5EF8768D-635A-48A3-8270-2F3DA8AC53D7} = {EFBBA5D3-028D-4911-BB6C-19F976CBD25D}
+		{4609B3CB-480C-4330-91DD-8441D990B743} = {EFBBA5D3-028D-4911-BB6C-19F976CBD25D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51B7BC1A-E290-4FB3-BD44-25797EFA4B59}
