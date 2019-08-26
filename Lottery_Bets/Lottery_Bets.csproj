@@ -17,10 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\IRepository\IRepository.csproj" />
     <ProjectReference Include="..\IService\IService.csproj" />
-    <ProjectReference Include="..\OtherHelp\OtherHelp.csproj" />
-    <ProjectReference Include="..\Repository\Repository.csproj" />
     <ProjectReference Include="..\ServiceRepository\Service.csproj" />
     <ProjectReference Include="..\ViewModel\ViewModel.csproj" />
   </ItemGroup>

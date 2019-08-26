@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Entity", "Entity\Entity.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtherHelp", "OtherHelp\OtherHelp.csproj", "{5EF8768D-635A-48A3-8270-2F3DA8AC53D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{4609B3CB-480C-4330-91DD-8441D990B743}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{4609B3CB-480C-4330-91DD-8441D990B743}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timing_Tasks", "Timing_Tasks\Timing_Tasks.csproj", "{AD6546D5-E027-48FA-83A8-78D627442854}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{4609B3CB-480C-4330-91DD-8441D990B743}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4609B3CB-480C-4330-91DD-8441D990B743}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4609B3CB-480C-4330-91DD-8441D990B743}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD6546D5-E027-48FA-83A8-78D627442854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD6546D5-E027-48FA-83A8-78D627442854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD6546D5-E027-48FA-83A8-78D627442854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD6546D5-E027-48FA-83A8-78D627442854}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
