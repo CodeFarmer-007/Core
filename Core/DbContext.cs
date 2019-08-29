@@ -17,7 +17,7 @@ namespace Core
             Db = new SqlSugarClient(new ConnectionConfig()
             {
                 ConnectionString = AppSettings.GetEntityValue("DbConnection:MySqlConnectionString"),
-                DbType = DbType.MySql,
+                DbType = DbType.SqlServer,
                 IsAutoCloseConnection = true
             });
 
