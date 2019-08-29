@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common;
 using IService;
 using Microsoft.AspNetCore.Mvc;
 using ViewModel;
@@ -22,7 +23,7 @@ namespace Lottery_Bets.Controllers
         /// 下注
         /// </summary>
         /// <returns></returns>
-        public async Task<ResponseRsp<bool>> Index() => (await _betsService.Bets()).ReturnBool();
+        public async Task<ApiResult<bool>> Index() => (await _betsService.Bets()).ReturnBool();
 
     }
 }

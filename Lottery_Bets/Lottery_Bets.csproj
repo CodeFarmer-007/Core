@@ -28,7 +28,7 @@
 
 
   <ItemGroup>
-    <Folder Include="Log\" />
+    <Folder Include="Log\SqlLog\" />
   </ItemGroup>
 
 

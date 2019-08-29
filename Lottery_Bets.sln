@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OtherHelp", "OtherHelp\Othe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{4609B3CB-480C-4330-91DD-8441D990B743}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timing_Tasks", "Timing_Tasks\Timing_Tasks.csproj", "{AD6546D5-E027-48FA-83A8-78D627442854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Timing_Tasks", "Timing_Tasks\Timing_Tasks.csproj", "{AD6546D5-E027-48FA-83A8-78D627442854}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{9F869896-DC4B-4EBC-866F-407E5208C154}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{AD6546D5-E027-48FA-83A8-78D627442854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD6546D5-E027-48FA-83A8-78D627442854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD6546D5-E027-48FA-83A8-78D627442854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F869896-DC4B-4EBC-866F-407E5208C154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F869896-DC4B-4EBC-866F-407E5208C154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F869896-DC4B-4EBC-866F-407E5208C154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F869896-DC4B-4EBC-866F-407E5208C154}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,6 +101,7 @@ Global
 		{14241BF0-947E-4A26-A0E2-6B679BC5FC31} = {1FB5AD18-BC8C-424A-89DA-12AAAD1CA38B}
 		{5EF8768D-635A-48A3-8270-2F3DA8AC53D7} = {EFBBA5D3-028D-4911-BB6C-19F976CBD25D}
 		{4609B3CB-480C-4330-91DD-8441D990B743} = {EFBBA5D3-028D-4911-BB6C-19F976CBD25D}
+		{9F869896-DC4B-4EBC-866F-407E5208C154} = {79039FF4-9D69-49E7-82C1-4B43EC6E4685}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {51B7BC1A-E290-4FB3-BD44-25797EFA4B59}
