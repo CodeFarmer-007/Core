@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using ViewModel;
 
-namespace IRepository.Base
+namespace IService.Base
 {
     /// <summary>
     /// 定义基本服务
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseService<T> where T : class
     {
         #region 添加操作
         /// <summary>

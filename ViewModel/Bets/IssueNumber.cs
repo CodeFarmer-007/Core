@@ -19,6 +19,13 @@ namespace ViewModel.Bets
         public string openTime { get; set; }
         public bool open { get; set; }
         public string createdTime { get; set; }
+
+
+        #region 额外判断
+        public string BigOrSmall { get; set; }
+        public string SingleOrDouble { get; set; }
+        public int SumValue { get; set; }
+        #endregion
     }
 
 }

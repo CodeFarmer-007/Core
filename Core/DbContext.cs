@@ -16,7 +16,7 @@ namespace Core
         {
             Db = new SqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString = AppSettings.GetEntityValue("DbConnection:MySqlConnectionString"),
+                ConnectionString = AppSettings.GetEntityValue("DbConnection:SqlConnectionString"),
                 DbType = DbType.SqlServer,
                 IsAutoCloseConnection = true
             });
@@ -33,7 +33,6 @@ namespace Core
         #region sql日志处理
         void AddSqlLog(string sql, SugarParameter[] pars)
         {
-
             try
             {
                 StringBuilder sb = new StringBuilder();
@@ -61,6 +60,7 @@ namespace Core
             }
             catch (Exception)
             {
+
             }
         }
         #endregion

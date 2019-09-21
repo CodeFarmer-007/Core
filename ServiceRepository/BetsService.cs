@@ -1,6 +1,9 @@
-﻿using Help;
+﻿using Entity.Lottery;
+using Help;
 using IService;
 using OtherHelp;
+using Service.Base;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -11,12 +14,59 @@ using ViewModel.Bets;
 
 namespace Service
 {
-    public class BetsService : IBetsService
+    public class BetsService : BaseService<LotteryNumber>, IBetsService
     {
         private readonly string urlText = AppSettings.GetEntityValue("Bets:UrlAddress");
 
         private readonly string sessionValue = AppSettings.GetEntityValue("Bets:SessionValue");
 
+
+        #region 插入历史号码数据
+        public async Task<bool> AddRecord()
+        {
+            await Task.Delay(0);
+
+            try
+            {
+                var list = GetIssueNumber();
+
+                List<LotteryNumber> model = new List<LotteryNumber>();
+                foreach (var item in list)
+                {
+                    var InsertNumberState = Db.Queryable<LotteryNumber>().Any(a => a.IssueNumber == item.issue);
+                    if (!InsertNumberState)
+                    {
+                        LotteryNumber lottery = new LotteryNumber();
+                        lottery.IssueNumber = item.issue;
+                        lottery.One = Convert.ToInt32(item.openNumber.Split(',')[0]);
+                        lottery.Two = Convert.ToInt32(item.openNumber.Split(',')[1]);
+                        lottery.Three = Convert.ToInt32(item.openNumber.Split(',')[2]);
+                        lottery.SumValue = item.SumValue;
+                        lottery.BigOrSmall = item.BigOrSmall;
+                        lottery.SingleOrDouble = item.SingleOrDouble;
+                        lottery.CreatTime = DateTime.Now;
+                        model.Add(lottery);
+                    }
+                }
+                var count = Db.Insertable(model).ExecuteCommand();
+                if (count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        #endregion
+
+
+        #region 第一版
         /// <summary>
         /// 下注（m.caikz99.com）
         /// </summary>
@@ -137,6 +187,279 @@ namespace Service
             }
         }
 
+
+        #endregion
+
+
+        #region 第二版
+
+        public async Task<bool> Bets_Lucky()
+        {
+            await Task.Delay(0);
+
+            if (string.IsNullOrWhiteSpace(urlText))
+            {
+                throw new Exception("网站地址【Bets:UrlAddress】找不到");
+            }
+
+            if (string.IsNullOrWhiteSpace(sessionValue))
+            {
+                throw new Exception("账号Cookie【Bets:SessionValue】找不到");
+            }
+
+            //要购买的次数
+            int PurchaseTimes = 50;
+            //当前账户金额
+            decimal money = GetThisAccontMoney();
+
+            for (int i = 0; i < PurchaseTimes; i++)
+            {
+                int add = i;
+                //获取历史期号信息
+                var NumberList = GetIssueNumber();
+
+                if (NumberList.Count > 0)
+                {
+
+                    #region 新增期号
+                    //var thisNumberListOne = GetIssueNumber();
+                    ////判断数据库是否存在 该期号
+                    //foreach (var item in thisNumberListOne)
+                    //{
+                    //    var InsertNumberState = Db.Queryable<LotteryNumber>().Any(a => a.IssueNumber == item.issue);
+                    //    if (!InsertNumberState)
+                    //    {
+                    //        LotteryNumber lottermodel = new LotteryNumber();
+                    //        lottermodel.IssueNumber = item.issue;
+                    //        lottermodel.One = Convert.ToInt32(item.openNumber.Split(',')[0]);
+                    //        lottermodel.Two = Convert.ToInt32(item.openNumber.Split(',')[1]);
+                    //        lottermodel.Three = Convert.ToInt32(item.openNumber.Split(',')[2]);
+                    //        lottermodel.SumValue = item.SumValue;
+                    //        lottermodel.BigOrSmall = item.BigOrSmall;
+                    //        lottermodel.CreatTime = DateTime.Now;
+                    //        lottermodel.SingleOrDouble = item.SingleOrDouble;
+
+                    //        var thisCount = Db.Insertable(lottermodel).ExecuteCommand();
+                    //        if (thisCount > 0)
+                    //        {
+                    //            string aa = "aaaaaaaaaaaaaaaaaaa";
+                    //        }
+                    //        else
+                    //        {
+                    //            string bb3 = "bbbbbbbbbbbbbbbbbbb";
+                    //        }
+                    //    }
+                    //}
+                    #endregion
+
+
+
+                    //判断历史期号是否存在
+                    var HistoryList1 = Db.Queryable<LotteryNumber>().OrderBy(a => a.IssueNumber, OrderByType.Desc).Skip(0).Take(4);
+
+                    var HistoryList = HistoryList1.OrderBy(a => a.IssueNumber, OrderByType.Asc).ToList();
+                    #region 判断要押的值
+                    //要买的值
+                    string Pledge = "";
+
+                    int big, small, single, doubleInt;
+                    big = small = single = doubleInt = 0;
+
+                    foreach (var item in HistoryList)
+                    {
+                        #region 大/小
+                        if (item.SumValue > 10)
+                        {
+                            small = 0;
+                            big += 1;
+                        }
+                        else
+                        {
+                            big = 0;
+                            small += 1;
+                        }
+                        #endregion
+
+                        #region 单/双
+                        if (item.SingleOrDouble == "单")
+                        {
+                            doubleInt = 0;
+                            single += 1;
+                        }
+                        else
+                        {
+                            single = 0;
+                            doubleInt += 1;
+                        }
+                        #endregion
+
+                    }
+
+                    if (big == 3)
+                    {
+                        Pledge = "大";
+                    }
+                    else if (small == 3)
+                    {
+                        Pledge = "小";
+                    }
+                    else if (single == 3)
+                    {
+                        Pledge = "单";
+                    }
+                    else if (doubleInt == 3)
+                    {
+                        Pledge = "双";
+                    }
+                    #endregion
+
+                    if (!string.IsNullOrWhiteSpace(Pledge))
+                    {
+                        //进行购买
+
+                        //支付实体
+                        List<BettingData> list = new List<BettingData>();
+                        BettingData bettingData = new BettingData();
+                        bettingData.lotteryCode = AppSettings.GetEntityValue("Bets:lotteryCode");
+                        bettingData.playDetailCode = bettingData.lotteryCode + "A10";
+                        bettingData.bettingNumber = Pledge;
+                        bettingData.bettingCount = 1;
+                        bettingData.bettingAmount = 1;
+                        bettingData.bettingPoint = "1.0";
+                        bettingData.bettingUnit = 1;
+                        long number = Convert.ToInt64(GetThisDayMaxIssueNumber());
+                        bettingData.bettingIssue = (number + 1).ToString();
+
+                        var thisBettingIssue = bettingData.bettingIssue;
+
+                        bettingData.graduationCount = 1;
+                        list.Add(bettingData);
+
+                        var encodeString = UrlEncode(list.ToJson()); //Encode参数数据
+
+                        //买
+                        var state = BettingAction("bettingData=" + encodeString);
+                        if (state)
+                        {
+                            bool Next = false;
+
+                            while (!Next)
+                            {
+                                if (thisBettingIssue == GetThisDayMaxIssueNumber())
+                                {
+                                    LotteryNumber lottery = new LotteryNumber();
+
+                                    var thisNumberList = GetIssueNumber();
+                                    //判断数据库是否存在 该期号
+                                    foreach (var item in thisNumberList)
+                                    {
+                                        var InsertNumberState = Db.Queryable<LotteryNumber>().Any(a => a.IssueNumber == thisBettingIssue);
+                                        if (!InsertNumberState)
+                                        {
+                                            lottery.IssueNumber = item.issue;
+                                            lottery.One = Convert.ToInt32(item.openNumber.Split(',')[0]);
+                                            lottery.Two = Convert.ToInt32(item.openNumber.Split(',')[1]);
+                                            lottery.Three = Convert.ToInt32(item.openNumber.Split(',')[2]);
+                                            lottery.SumValue = item.SumValue;
+                                            lottery.BigOrSmall = item.BigOrSmall;
+                                            lottery.CreatTime = DateTime.Now;
+                                            lottery.SingleOrDouble = item.SingleOrDouble;
+                                        }
+                                    }
+
+                                    //延长一秒
+                                    await Task.Delay(1000);
+
+                                    #region 是否盈利 并插入数据
+
+                                    decimal thisMoney = GetThisAccontMoney();
+                                    if (thisMoney > money)
+                                    {
+                                        lottery.IsOK = true;
+                                        lottery.IsWin = true;
+                                    }
+                                    else
+                                    {
+                                        lottery.BuyingTime = DateTime.Now;
+                                        lottery.IsWin = false;
+                                    }
+
+                                    Db.Insertable(lottery).ExecuteCommand();
+
+                                    #endregion
+
+                                    Next = true;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("购买过程中产生错误！");
+                        }
+                    }
+                    else
+                    {
+                        await Task.Delay(60000);
+
+                        var thisRecordState = await AddRecord();
+                        if (thisRecordState)
+                        {
+                            i = i - 1;
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("账号登录失败！");
+                }
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// 获取历史期号信息
+        /// </summary>
+        /// <returns></returns>
+        public List<Datum> GetIssueNumber()
+        {
+            List<Datum> list = new List<Datum>();
+            var url = "https://m.caikz99.com/v1/lottery/openResult?lotteryCode=1407&dataNum=10";
+
+            var http = HttpApi.RequestMethod("", url, "", GetSessionInfo(), "Get");
+
+            if (http.StatusCode == HttpStatusCode.OK)
+            {
+                IssueNumber issue = http.Html.JsonToEntity<IssueNumber>();
+                if (issue.code == 1)
+                {
+                    foreach (var item in issue.data)
+                    {
+                        Datum model = new Datum();
+                        model.createdTime = item.createdTime;
+                        model.issue = item.issue;
+                        model.lotteryCode = item.lotteryCode;
+                        model.open = item.open;
+                        model.openTime = item.openTime;
+                        model.openNumber = item.openNumber;
+
+                        var spilt = item.openNumber.Split(',');
+                        model.SumValue = Convert.ToInt32(spilt[0]) + Convert.ToInt32(spilt[1]) + Convert.ToInt32(spilt[2]);
+                        model.BigOrSmall = model.SumValue > 10 ? "大" : "小";
+                        model.SingleOrDouble = (model.SumValue) % 2 == 0 ? "双" : "单";
+
+                        list.Add(model);
+                    }
+                }
+            }
+            return list;
+        }
+
+        #endregion
+
+
+        #region 公共方法
         /// <summary>
         /// 获取当前账号下的余额
         /// </summary>
@@ -203,7 +526,6 @@ namespace Service
             return false;
         }
 
-
         public SessionInfo GetSessionInfo()
         {
             SessionInfo sessionInfo = new SessionInfo();
@@ -224,5 +546,7 @@ namespace Service
 
             return (sb.ToString());
         }
+        #endregion
+
     }
 }

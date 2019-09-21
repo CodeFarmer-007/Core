@@ -1,7 +1,7 @@
 ﻿using Common;
 using Common.Extensions;
 using Core;
-using IRepository.Base;
+using IService.Base;
 using OtherHelp;
 using System;
 using System.Collections.Generic;
@@ -9,9 +9,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Base
+namespace Service.Base
 {
-    public class BaseServer<T> : DbContext, IBaseRepository<T> where T : class, new()
+    public class BaseService<T> : DbContext, IBaseService<T> where T : class, new()
     {
         #region 添加操作
         /// <summary>

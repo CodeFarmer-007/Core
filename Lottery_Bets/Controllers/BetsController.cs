@@ -23,7 +23,10 @@ namespace Lottery_Bets.Controllers
         /// 下注
         /// </summary>
         /// <returns></returns>
-        public async Task<ApiResult<bool>> Index() => (await _betsService.Bets()).ReturnBool();
+        //public async Task<ApiResult<bool>> Index() => (await _betsService.Bets()).ReturnBool();
+        public async Task<ApiResult<bool>> Index() => (await _betsService.Bets_Lucky()).ReturnBool();
+
+        public async Task<ApiResult<bool>> Index2() => (await _betsService.AddRecord()).ReturnBool();
 
     }
 }
