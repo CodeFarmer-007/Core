@@ -208,8 +208,8 @@ namespace Service
             }
 
             //要购买的次数
-            int PurchaseTimes = 50;
-           
+            int PurchaseTimes = 50000;
+
 
             for (int i = 0; i < PurchaseTimes; i++)
             {
@@ -223,44 +223,11 @@ namespace Service
 
                 if (NumberList.Count > 0)
                 {
-
-                    #region 新增期号
-                    //var thisNumberListOne = GetIssueNumber();
-                    ////判断数据库是否存在 该期号
-                    //foreach (var item in thisNumberListOne)
-                    //{
-                    //    var InsertNumberState = Db.Queryable<LotteryNumber>().Any(a => a.IssueNumber == item.issue);
-                    //    if (!InsertNumberState)
-                    //    {
-                    //        LotteryNumber lottermodel = new LotteryNumber();
-                    //        lottermodel.IssueNumber = item.issue;
-                    //        lottermodel.One = Convert.ToInt32(item.openNumber.Split(',')[0]);
-                    //        lottermodel.Two = Convert.ToInt32(item.openNumber.Split(',')[1]);
-                    //        lottermodel.Three = Convert.ToInt32(item.openNumber.Split(',')[2]);
-                    //        lottermodel.SumValue = item.SumValue;
-                    //        lottermodel.BigOrSmall = item.BigOrSmall;
-                    //        lottermodel.CreatTime = DateTime.Now;
-                    //        lottermodel.SingleOrDouble = item.SingleOrDouble;
-
-                    //        var thisCount = Db.Insertable(lottermodel).ExecuteCommand();
-                    //        if (thisCount > 0)
-                    //        {
-                    //            string aa = "aaaaaaaaaaaaaaaaaaa";
-                    //        }
-                    //        else
-                    //        {
-                    //            string bb3 = "bbbbbbbbbbbbbbbbbbb";
-                    //        }
-                    //    }
-                    //}
-                    #endregion
-
-
-
                     //判断历史期号是否存在
-                    var HistoryList1 = Db.Queryable<LotteryNumber>().OrderBy(a => a.IssueNumber, OrderByType.Desc).Skip(0).Take(4);
+                    var HistoryList = Db.Queryable<LotteryNumber>().OrderBy(a => a.IssueNumber, OrderByType.Desc).Skip(0).Take(4).ToList();
 
-                    var HistoryList = HistoryList1.OrderBy(a => a.IssueNumber, OrderByType.Asc).ToList();
+                    HistoryList.Reverse();
+
                     #region 判断要押的值
                     //要买的值
                     string Pledge = "";
@@ -357,7 +324,7 @@ namespace Service
                                     //判断数据库是否存在 该期号
                                     foreach (var item in thisNumberList)
                                     {
-                                        var InsertNumberState = Db.Queryable<LotteryNumber>().Any(a => a.IssueNumber == thisBettingIssue);
+                                        var InsertNumberState = Db.Queryable<LotteryNumber>().Any(a => a.IssueNumber == item.issue);
                                         if (!InsertNumberState)
                                         {
                                             lottery.IssueNumber = item.issue;
@@ -368,44 +335,61 @@ namespace Service
                                             lottery.BigOrSmall = item.BigOrSmall;
                                             lottery.CreatTime = DateTime.Now;
                                             lottery.SingleOrDouble = item.SingleOrDouble;
+
+                                            break;
                                         }
                                     }
 
-                                    //延长一秒
-                                    await Task.Delay(1000);
 
                                     #region 是否盈利 并插入数据
 
-                                    decimal thisMoney = GetThisAccontMoney();
-                                    if (thisMoney > money)
+                                    lottery.IsOK = true;
+                                    lottery.BuyingTime = DateTime.Now;
+
+
+
+                                    bool moneyState = false;
+
+                                    while (moneyState == false)
                                     {
-                                        lottery.IsOK = true;
-                                        lottery.IsWin = true;
-                                    }
-                                    else
-                                    {
-                                        lottery.BuyingTime = DateTime.Now;
-                                        lottery.IsWin = false;
+                                        decimal thisMoney = GetThisAccontMoney();
+                                        if (thisMoney != money)
+                                        {
+                                            if (thisMoney > money)
+                                            {
+                                                lottery.IsWin = true;
+                                            }
+                                            else
+                                            {
+                                                lottery.IsWin = false;
+                                            }
+                                            LogHelper.Info("", "期号：" + thisBettingIssue + "，买入号码：" + Pledge + "，是否盈利：" + (lottery.IsWin == true ? "盈利" : "亏"));
+                                            moneyState = true;
+                                        }
                                     }
 
+
+
                                     Db.Insertable(lottery).ExecuteCommand();
+
 
                                     #endregion
 
                                     Next = true;
                                 }
                             }
-
-                            await Task.Delay(55000);
                         }
                         else
                         {
-                            throw new Exception("购买过程中产生错误！");
+                            LogHelper.Info("", "购买过程中产生错误!");
+                            i = i - 1;
                         }
                     }
                     else
                     {
-                        await Task.Delay(60000);
+                        LogHelper.Info("", "不符合购买规则执行跳过");
+
+                        await Task.Delay(58000);
 
                         var thisRecordState = await AddRecord();
                         if (thisRecordState)
@@ -416,7 +400,8 @@ namespace Service
                 }
                 else
                 {
-                    throw new Exception("账号登录失败！");
+                    LogHelper.Info("", "账号登录失败!");
+                    i = i - 1;
                 }
             }
 
