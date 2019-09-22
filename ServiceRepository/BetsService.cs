@@ -209,12 +209,15 @@ namespace Service
 
             //要购买的次数
             int PurchaseTimes = 50;
-            //当前账户金额
-            decimal money = GetThisAccontMoney();
+           
 
             for (int i = 0; i < PurchaseTimes; i++)
             {
+                //当前账户金额
+                decimal money = GetThisAccontMoney();
+
                 int add = i;
+
                 //获取历史期号信息
                 var NumberList = GetIssueNumber();
 
@@ -330,7 +333,7 @@ namespace Service
                         long number = Convert.ToInt64(GetThisDayMaxIssueNumber());
                         bettingData.bettingIssue = (number + 1).ToString();
 
-                        var thisBettingIssue = bettingData.bettingIssue;
+                        var thisBettingIssue = (number + 1).ToString();
 
                         bettingData.graduationCount = 1;
                         list.Add(bettingData);
@@ -343,9 +346,10 @@ namespace Service
                         {
                             bool Next = false;
 
-                            while (!Next)
+                            while (Next == false)
                             {
-                                if (thisBettingIssue == GetThisDayMaxIssueNumber())
+                                var thisNumberIssue = GetThisDayMaxIssueNumber();
+                                if (thisBettingIssue == thisNumberIssue)
                                 {
                                     LotteryNumber lottery = new LotteryNumber();
 
@@ -391,6 +395,8 @@ namespace Service
                                     Next = true;
                                 }
                             }
+
+                            await Task.Delay(55000);
                         }
                         else
                         {
