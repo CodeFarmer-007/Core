@@ -208,7 +208,7 @@ namespace Service
             }
 
             //要购买的次数
-            int PurchaseTimes = 50000;
+            long PurchaseTimes = 5000000;
 
 
             for (int i = 0; i < PurchaseTimes; i++)
@@ -363,15 +363,12 @@ namespace Service
                                             {
                                                 lottery.IsWin = false;
                                             }
-                                            LogHelper.Info("", "期号：" + thisBettingIssue + "，买入号码：" + Pledge + "，是否盈利：" + (lottery.IsWin == true ? "盈利" : "亏"));
+                                            LogHelper.Info("", "期号：" + thisBettingIssue + "，买入号码：" + Pledge + "，是否盈利：" + (lottery.IsWin == true ? "盈利" : "亏") + "，当前余额：" + thisMoney);
                                             moneyState = true;
                                         }
                                     }
 
-
-
                                     Db.Insertable(lottery).ExecuteCommand();
-
 
                                     #endregion
 
@@ -387,14 +384,38 @@ namespace Service
                     }
                     else
                     {
-                        LogHelper.Info("", "不符合购买规则执行跳过");
+                        LogHelper.Info("", "不符合购买规则");
 
-                        await Task.Delay(58000);
+                        bool getNumber = false;
 
-                        var thisRecordState = await AddRecord();
-                        if (thisRecordState)
+                        while (getNumber == false)
                         {
-                            i = i - 1;
+                            DateTime time = DateTime.Now;
+                            if (time.Second >= 05 && time.Second < 10)
+                            {
+                                var thisRecordState = await AddRecord();
+                                if (thisRecordState)
+                                {
+                                    LogHelper.Info("", "执行跳过");
+                                    i = i - 1;
+                                }
+                                else
+                                {
+                                    bool getIssueNumber = false;
+                                    while (getIssueNumber == false)
+                                    {
+                                        var recordState = await AddRecord();
+                                        if (recordState)
+                                        {
+                                            LogHelper.Info("", "不符合购买规则执行跳过，获取历史期号错误，循环获取执行中！");
+                                            getIssueNumber = true;
+                                            i = i - 1;
+                                        }
+                                    }
+                                    LogHelper.Info("", "不符合购买规则执行跳过，获取历史期号错误，已执行循环！");
+                                }
+                                getNumber = true;
+                            }
                         }
                     }
                 }
