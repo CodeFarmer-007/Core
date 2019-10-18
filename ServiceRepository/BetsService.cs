@@ -210,9 +210,13 @@ namespace Service
             //要购买的次数
             long PurchaseTimes = 5000000;
 
+            int ThisBuyNumber = 0;
+            string ThisBuyType = "";
+            int ThisAmount = 1;
 
             for (int i = 0; i < PurchaseTimes; i++)
             {
+
                 //当前账户金额
                 decimal money = GetThisAccontMoney();
 
@@ -223,64 +227,114 @@ namespace Service
 
                 if (NumberList.Count > 0)
                 {
-                    //判断历史期号是否存在
-                    var HistoryList = Db.Queryable<LotteryNumber>().OrderBy(a => a.IssueNumber, OrderByType.Desc).Skip(0).Take(4).ToList();
+                    #region 算法一、收益失败
+                    ////判断历史期号是否存在
+                    //var HistoryList = Db.Queryable<LotteryNumber>().OrderBy(a => a.IssueNumber, OrderByType.Desc).Skip(0).Take(4).ToList();
 
-                    HistoryList.Reverse();
+                    //HistoryList.Reverse();
+
+                    //#region 判断要押的值
+                    ////要买的值
+                    //string Pledge = "";
+
+                    //int big, small, single, doubleInt;
+                    //big = small = single = doubleInt = 0;
+
+                    //foreach (var item in HistoryList)
+                    //{
+                    //    #region 大/小
+                    //    if (item.SumValue > 10)
+                    //    {
+                    //        small = 0;
+                    //        big += 1;
+                    //    }
+                    //    else
+                    //    {
+                    //        big = 0;
+                    //        small += 1;
+                    //    }
+                    //    #endregion
+
+                    //    #region 单/双
+                    //    if (item.SingleOrDouble == "单")
+                    //    {
+                    //        doubleInt = 0;
+                    //        single += 1;
+                    //    }
+                    //    else
+                    //    {
+                    //        single = 0;
+                    //        doubleInt += 1;
+                    //    }
+                    //    #endregion
+
+                    //}
+
+                    //if (big == 3)
+                    //{
+                    //    Pledge = "大";
+                    //}
+                    //else if (small == 3)
+                    //{
+                    //    Pledge = "小";
+                    //}
+                    //else if (single == 3)
+                    //{
+                    //    Pledge = "单";
+                    //}
+                    //else if (doubleInt == 3)
+                    //{
+                    //    Pledge = "双";
+                    //}
+                    //#endregion
+                    #endregion
+
+                    #region 算法二，测试中
+                    //判断历史期号是否存在
+                    var HistoryList = Db.Queryable<LotteryNumber>().OrderBy(a => a.IssueNumber, OrderByType.Desc).Skip(0).Take(6).ToList();
+
+                    string thisBuyy = HistoryList[0].SumValue > 10 ? "大" : "小";
+                    decimal thisBuyMoney = GetThisAccontMoney();
+                    if (ThisBuyNumber != 0)
+                    {
+                        if (thisBuyy != ThisBuyType)
+                        {
+                            if (ThisBuyNumber == 1)
+                            {
+                                ThisAmount = 3;
+                                LogHelper.Info("", "余额：" + thisBuyMoney + "是否盈利：亏，继续买入:" + ThisAmount + "元");
+                            }
+                            //else if (ThisBuyNumber == 2)
+                            //{
+                            //    ThisAmount = 9;
+                            //    LogHelper.Info("", "余额：" + thisBuyMoney + "是否盈利：亏，继续买入:" + ThisAmount + "元");
+                            //}
+                        }
+                        else
+                        {
+                            LogHelper.Info("", "余额：" + thisBuyMoney + "是否盈利：盈利");
+                        }
+                    }
 
                     #region 判断要押的值
                     //要买的值
                     string Pledge = "";
 
-                    int big, small, single, doubleInt;
-                    big = small = single = doubleInt = 0;
+                    string oneState, twoState, threeState, fourState, fiveState, sixState;
+                    oneState = twoState = threeState = fourState = fiveState = sixState = "";
 
-                    foreach (var item in HistoryList)
-                    {
-                        #region 大/小
-                        if (item.SumValue > 10)
-                        {
-                            small = 0;
-                            big += 1;
-                        }
-                        else
-                        {
-                            big = 0;
-                            small += 1;
-                        }
-                        #endregion
+                    oneState = HistoryList[0].SumValue > 10 ? "大" : "小";
+                    twoState = HistoryList[1].SumValue > 10 ? "大" : "小";
+                    threeState = HistoryList[2].SumValue > 10 ? "大" : "小";
+                    fourState = HistoryList[3].SumValue > 10 ? "大" : "小";
+                    fiveState = HistoryList[4].SumValue > 10 ? "大" : "小";
+                    sixState = HistoryList[5].SumValue > 10 ? "大" : "小";
 
-                        #region 单/双
-                        if (item.SingleOrDouble == "单")
-                        {
-                            doubleInt = 0;
-                            single += 1;
-                        }
-                        else
-                        {
-                            single = 0;
-                            doubleInt += 1;
-                        }
-                        #endregion
-
-                    }
-
-                    if (big == 3)
+                    if (oneState != twoState && (twoState == threeState) && (threeState == fourState) && (fourState == fiveState) && (fiveState == sixState))
                     {
-                        Pledge = "大";
+                        Pledge = twoState;
                     }
-                    else if (small == 3)
-                    {
-                        Pledge = "小";
-                    }
-                    else if (single == 3)
-                    {
-                        Pledge = "单";
-                    }
-                    else if (doubleInt == 3)
-                    {
-                        Pledge = "双";
-                    }
+                    #endregion
                     #endregion
 
                     if (!string.IsNullOrWhiteSpace(Pledge))
@@ -294,7 +348,7 @@ namespace Service
                         bettingData.playDetailCode = bettingData.lotteryCode + "A10";
                         bettingData.bettingNumber = Pledge;
                         bettingData.bettingCount = 1;
-                        bettingData.bettingAmount = 1;
+                        bettingData.bettingAmount = ThisAmount;
                         bettingData.bettingPoint = "1.0";
                         bettingData.bettingUnit = 1;
                         long number = Convert.ToInt64(GetThisDayMaxIssueNumber());
@@ -311,6 +365,16 @@ namespace Service
                         var state = BettingAction("bettingData=" + encodeString);
                         if (state)
                         {
+                            ThisBuyType = Pledge;
+                            if (ThisBuyNumber == 1)
+                            {
+                                ThisBuyNumber = 0;
+                            }
+                            else
+                            {
+                                ThisBuyNumber = ThisBuyNumber + 1;
+                            }
+
                             bool Next = false;
 
                             while (Next == false)
@@ -363,7 +427,7 @@ namespace Service
                                             {
                                                 lottery.IsWin = false;
                                             }
-                                            LogHelper.Info("", "期号：" + thisBettingIssue + "，买入号码：" + Pledge + "，是否盈利：" + (lottery.IsWin == true ? "盈利" : "亏") + "，当前余额：" + thisMoney);
+                                            LogHelper.Info("", "期号：" + thisBettingIssue + "，买入号码：" + Pledge + "，买入金额：" + ThisAmount + "，当前余额：" + thisMoney);
                                             moneyState = true;
                                         }
                                     }
