@@ -295,12 +295,14 @@ namespace Service
 
                     string thisBuyy = HistoryList[0].SumValue > 10 ? "大" : "小";
                     decimal thisBuyMoney = GetThisAccontMoney();
+                    bool thisBuyyState = false;
                     if (ThisBuyNumber != 0)
                     {
                         if (thisBuyy != ThisBuyType)
                         {
                             if (ThisBuyNumber == 1)
                             {
+                                thisBuyyState = true;
                                 ThisAmount = 3;
                                 LogHelper.Info("", "余额：" + thisBuyMoney + "是否盈利：亏，继续买入:" + ThisAmount + "元");
                             }
@@ -333,6 +335,11 @@ namespace Service
                     if (oneState != twoState && (twoState == threeState) && (threeState == fourState) && (fourState == fiveState) && (fiveState == sixState))
                     {
                         Pledge = twoState;
+                    }
+
+                    if (thisBuyyState)
+                    {
+                        Pledge = ThisBuyType;
                     }
                     #endregion
                     #endregion
